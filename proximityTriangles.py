@@ -23,14 +23,13 @@ def area(a, b, c):
 def PointsInCircum(r, xmod, ymod, dot_num):
 	return [(math.cos(2*pi/dot_num*x)*r+xmod,math.sin(2*pi/dot_num*x)*r+ymod) for x in xrange(0,dot_num)]
 
-def main(num_circles,num_frames,radius_range=[10,100]):
+def main(num_circles,num_frames,radius_range=[10,100], line_length=250):
 	circle_list = []
 	for i in range(num_circles):
 		starting_x = random.randint(0,1000)
 		starting_y = random.randint(0,1000)
 		radius = random.randint(radius_range[0],radius_range[1])
 		d = collections.deque(PointsInCircum(r=radius, xmod=starting_x, ymod=starting_y,dot_num=num_frames))
-		# d = collections.deque(PointsInCircum(r=100, xmod=starting_x, ymod=starting_y,dot_num=num_frames))
 		d.rotate(random.randint(0,num_frames))
 		circle_list.append(d)
 
@@ -42,16 +41,29 @@ def main(num_circles,num_frames,radius_range=[10,100]):
 			draw.stroke_color = Color('red')
 			draw.stroke_width = 2
 			draw.fill_color = Color('red')
+			#draw every point at it's state around the circle
 			for point in point_list:
 				draw.circle((point[0],point[1]),(point[0]+1, point[1]+1))
 
+			#draws line if 2 points are within line_length of each other
 			lines = []
 			for line in itertools.combinations(point_list,2):
-				if distance(line[0],line[1]) < 250:
+				if distance(line[0],line[1]) <= line_length:
 					lines.append(line)
 			for line in lines:
 				draw.line(line[0],line[1])
 
+			#if lines form a triangle, draw a triangle
+			for poss_triangle in itertools.combinations(lines, 3):
+				all_points = []
+				for edge in poss_triangle:
+					all_points.append(edge[0])
+					all_points.append(edge[1])
+				all_points.sort()
+				if all_points[0] == all_points[1] and all_points[2] == all_points[3] and all_points[4] == all_points[5]:
+					draw.polygon([all_points[0],all_points[2],all_points[4]])
+
+			#draw image onto black background and save it
 			with Image(width=1000, height=1000, background=Color('black')) as image:
 				draw(image)
 				image.save(filename=('frame'+str(frame)+'.png'))
@@ -62,7 +74,6 @@ def main(num_circles,num_frames,radius_range=[10,100]):
 				image.sequence.append(this_frame)
 		image.save(filename='testingTriangles.gif')
 
-main(num_circles=20,num_frames=30)
-#10,30 = 34
-#20,50 = 60
-#20,60 = 
+main(num_circles=30,num_frames=30)
+#20,30 = 15
+#30,30 = 19
