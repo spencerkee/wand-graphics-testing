@@ -2,3 +2,7 @@ Look to optimize triangle finding function.
 Have line thickness depend on length.
 Have the different circles described produce different images at 
 different times?
+
+The color selection function needs to be scaleable
+Add time estimation?
+Add options to draw lines/triangles or not.
