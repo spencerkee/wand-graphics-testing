@@ -50,10 +50,7 @@ def check_for_triangles(lines):
 			real_triangles.append([all_points[0],all_points[2],all_points[5]])
 	return real_triangles
 
-def main(num_circles,num_frames,radius_range=[10,100], line_length=250, dimensions=[1000,1000],background_color='black',line_color='red',triangle_color=None):
-
-	triangle_divisor = triangle_side_area(line_length,line_length,line_length)/len(poss_colors)
-
+def makeCircles(num_circles, num_frames, radius_range, dimensions):
 	circle_list = []
 	for i in range(num_circles):
 		the_center = [random.randint(0,dimensions[0]),random.randint(0,dimensions[1])]
@@ -61,6 +58,12 @@ def main(num_circles,num_frames,radius_range=[10,100], line_length=250, dimensio
 		d = collections.deque(PointsInCircum(r=radius, center_point=the_center,dot_num=num_frames))
 		d.rotate(random.randint(0,num_frames))
 		circle_list.append(d)
+	return circle_list
+
+def main(num_circles,num_frames,radius_range=[10,100], line_length=250, dimensions=[1000,1000],background_color='black',line_color='red',triangle_color=None):
+	#this is for choosing the intensity of the color
+	triangle_divisor = triangle_side_area(line_length,line_length,line_length)/len(poss_colors)
+	circle_list = makeCircles(num_circles, num_frames=num_frames, radius_range=radius_range, dimensions=dimensions)
 
 	for frame in range(num_frames):
 		print 'frame', frame
@@ -81,6 +84,7 @@ def main(num_circles,num_frames,radius_range=[10,100], line_length=250, dimensio
 					lines.append(line)
 			for line in lines:
 				draw.line(line[0],line[1])
+			# print lines
 
 			#if lines form a triangle, draw a triangle
 			for triangle in check_for_triangles(lines):
@@ -181,7 +185,8 @@ def doubleImage(first_set,second_set,num_frames=20,line_length=250,dimensions=[1
 				image.sequence.append(this_frame)
 		image.save(filename='testingTriangles.gif')
 
-main(num_circles=50,num_frames=30)
+main(num_circles=20,num_frames=30)
+
 # [500,100]
 set1 = [[100,100],[100,300],[500,300],[500,100]]
 # set1 = [(10,5), (12,7), (13,9), (14,9), (6,8), (7,6), (9,5),
