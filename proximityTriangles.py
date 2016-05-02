@@ -8,10 +8,8 @@ import collections
 import random
 import itertools
 
-
 poss_colors = ['LightCoral','IndianRed1','IndianRed2','brown1','firebrick1','brown2','IndianRed','IndianRed3','firebrick2','brown3','red',
 'red1','RosyBrown4','firebrick3','red2','firebrick','brown','red3','brown4','firebrick4','DarkRed','red4','maroon']
-
 poss_colors.sort(reverse=True)
 
 def distance(p0, p1):
@@ -19,7 +17,6 @@ def distance(p0, p1):
 
 def midpoint(p1, p2):
     return ((p1[0] + p2[0])/2, (p1[1] + p2[1])/2)
-
 
 def triangle_point_area(a, b, c):
 	def distance(p1, p2):
@@ -155,24 +152,24 @@ def doubleImage(first_set,second_set,num_frames=20,line_length=250,dimensions=[1
 			for point in point_list:
 				draw.circle((point[0],point[1]),(point[0]+1, point[1]+1))
 
-			# for i in first_set:
-			# 	draw.circle((i[0],i[1]),(i[0]+4,i[1]+4))
-			# for i in second_set:
-			# 	draw.circle((i[0],i[1]),(i[0]+1,i[1]+1))
+			for i in first_set:
+				draw.circle((i[0],i[1]),(i[0]+4,i[1]+4))
+			for i in second_set:
+				draw.circle((i[0],i[1]),(i[0]+1,i[1]+1))
 
 			# draws line if 2 points are within line_length of each other
 			lines = []
 			for line in itertools.combinations(point_list,2):
 				if distance(line[0],line[1]) <= line_length:
 					lines.append(line)
-			# for line in lines:
-			# 	draw.line(line[0],line[1])
+			for line in lines:
+				draw.line(line[0],line[1])
 
 			#if 3 points form a triangle, draw one
-			for triangle in check_for_triangles(lines):
-				color_number = int(triangle_point_area(triangle[0],triangle[1],triangle[2])/triangle_divisor)
-				draw.fill_color = Color(poss_colors[color_number])
-				draw.polygon([triangle[0],triangle[1],triangle[2]])
+			# for triangle in check_for_triangles(lines):
+			# 	color_number = int(triangle_point_area(triangle[0],triangle[1],triangle[2])/triangle_divisor)
+			# 	draw.fill_color = Color(poss_colors[color_number])
+			# 	draw.polygon([triangle[0],triangle[1],triangle[2]])
 
 			#draw image onto black background and save it
 			with Image(width=dimensions[0], height=dimensions[1], background=Color('black')) as image:
@@ -185,7 +182,7 @@ def doubleImage(first_set,second_set,num_frames=20,line_length=250,dimensions=[1
 				image.sequence.append(this_frame)
 		image.save(filename='testingTriangles.gif')
 
-main(num_circles=20,num_frames=30)
+# main(num_circles=40,num_frames=20)
 
 # [500,100]
 set1 = [[100,100],[100,300],[500,300],[500,100]]
@@ -209,9 +206,9 @@ set1 = [[100,100],[100,300],[500,300],[500,100]]
 # (10,4), (11,5), (11,6), (10,7) ,(6,5), (7,4), (8,5), (8,8) ,(15,1), (14,2)]
 set2 = [[400,400],[400,600],[600,600],[600,400]]
 # set2 = [[15,15]]
-# for i in range(len(set1)):
-# 	set1[i]=[set1[i][0]*28,600-set1[i][1]*28]
+for i in range(len(set1)):
+	set1[i]=[set1[i][0]*28,600-set1[i][1]*28]
 
 random.shuffle(set1)
 random.shuffle(set2)
-# doubleImage(set1, set2, num_frames=40, line_length=1000, dimensions=[1000,1000])
+# doubleImage(set1, set2, num_frames=10, line_length=1000, dimensions=[600,600])
