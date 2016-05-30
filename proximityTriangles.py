@@ -69,20 +69,45 @@ def check_for_triangles(lines):
 			real_triangles.append([all_points[0],all_points[2],all_points[5]])
 	return real_triangles
 
+def rotate_list(input_list, rotate_difference):
+	return_list = []
+	for i in range(rotate_difference, len(input_list)):
+		return_list.append(input_list[i])
+	for i in range(0,rotate_difference):
+		return_list.append(input_list[i])
+	return return_list
+
+def invert_list(input_list):
+	input_length = len(input_list)
+	return_list = []
+	for i in range(input_length):
+		return_list.append(0)
+	for i in range(input_length):
+		return_list[i] = input_list[input_length-(i+1)]
+	return return_list
+
 def makeCircles(num_circles, num_frames, radius_range, dimensions):
 	'''
 	Finds (num_circles) random points within (dimensions) and chooses a random radius 
 	for every point. Then uses PointsInCircum() to create the circles.
 
 	Num_frames corresponds to the number of points on a circle's circumference. 
+
+	(the_center) is the centerpoint of the circle
+	(radius) is the radius of the circle
+	(circle_points) are the points on the circumference made by PointsInCircum()
 	'''
 	circle_list = []
 	for i in range(num_circles):
 		the_center = [random.randint(0,dimensions[0]),random.randint(0,dimensions[1])]
 		radius = random.randint(radius_range[0],radius_range[1])
-		d = collections.deque(PointsInCircum(r=radius, center_point=the_center,dot_num=num_frames))
-		d.rotate(random.randint(0,num_frames))
-		circle_list.append(d)
+		circle_points = PointsInCircum(r=radius, center_point=the_center,dot_num=num_frames)
+		#gives the circle a random starting point
+		circle_points = rotate_list(circle_points,random.randint(0, num_frames))
+		#50% of the time circles will move counterclockwise
+		if random.randint(0,1) == 1:
+			circle_points = invert_list(circle_points)
+		circle_list.append(circle_points)
 	return circle_list
 
 def main(num_circles,num_frames,radius_range=[10,100], line_length=250, dimensions=[1000,1000],background_color='black',line_color='red',triangle_color=None):
@@ -219,6 +244,7 @@ def doubleImage(first_set,second_set,num_frames=20,line_length=250,dimensions=[1
 			with Image(filename=('frame'+str(frame_number)+'.png')) as this_frame:
 				image.sequence.append(this_frame)
 		image.save(filename='testingTriangles.gif')
+
 
 
 if __name__ == '__main__':
