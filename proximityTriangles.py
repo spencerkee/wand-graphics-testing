@@ -28,8 +28,8 @@ def midpoint(p1, p2):#midpoint of 2 coordinates
 
 def triangle_point_area(a, b, c):
 	'''
-	Calculates the area of a triangle given 3 points. 
-	This is used for choosing the triangle color. 
+	Calculates the area of a triangle given 3 points.
+	This is used for choosing the triangle color.
 	'''
 	def distance(p1, p2):
 		return math.hypot(p1[0]-p2[0], p1[1]-p2[1])
@@ -46,9 +46,9 @@ def triangle_side_area(a, b, c):
 	s = (a + b + c) / 2
 	return (s*(s-a)*(s-b)*(s-c)) ** 0.5
 
-def PointsInCircum(r, center_point, dot_num): 
+def PointsInCircum(r, center_point, dot_num):
 	'''
-	Takes in the number of points and the centerpoint and radius of a circle and 
+	Takes in the number of points and the centerpoint and radius of a circle and
 	returns the coordinates of evenly spaced points on the circumference.
 	'''
 	return [(math.cos(2*pi/dot_num*x)*r+center_point[0],math.sin(2*pi/dot_num*x)*r+center_point[1]) for x in xrange(0,dot_num)]
@@ -88,10 +88,10 @@ def invert_list(input_list):
 
 def makeCircles(num_circles, num_frames, radius_range, dimensions):
 	'''
-	Finds (num_circles) random points within (dimensions) and chooses a random radius 
+	Finds (num_circles) random points within (dimensions) and chooses a random radius
 	for every point. Then uses PointsInCircum() to create the circles.
 
-	Num_frames corresponds to the number of points on a circle's circumference. 
+	Num_frames corresponds to the number of points on a circle's circumference.
 
 	(the_center) is the centerpoint of the circle
 	(radius) is the radius of the circle
@@ -162,7 +162,7 @@ def main(num_circles,num_frames,radius_range=[10,100], line_length=250, dimensio
 def doubleImage(first_set,second_set,num_frames=20,line_length=250,dimensions=[1000,1000]):
 	'''
 	Unfinished project to switch between 2D wireframes by placing every pair of points between
-	the wireframes on opposite ends of an orbiting point.
+	the wireframes on opposite ends of an orbiting dot.
 	'''
 	triangle_divisor = triangle_side_area(line_length,line_length,line_length)/len(poss_colors)
 	circle_list = []
@@ -248,12 +248,12 @@ def doubleImage(first_set,second_set,num_frames=20,line_length=250,dimensions=[1
 
 
 if __name__ == '__main__':
-	main(num_circles=30,num_frames=30)
+	# main(num_circles=30,num_frames=30)
 
-# set1 = [[100,100],[100,300],[500,300],[500,100]]
-# set2 = [[400,400],[400,600],[600,600],[600,400]]
-# for i in range(len(set1)):
-# 	set1[i]=[set1[i][0]*28,600-set1[i][1]*28]
-# random.shuffle(set1)
-# random.shuffle(set2)
-# doubleImage(set1, set2, num_frames=10, line_length=1000, dimensions=[600,600])
+	set1 = [[100,100],[100,300],[500,300],[500,100]]
+	set2 = [[400,400],[400,600],[600,600],[600,400]]
+	# for i in range(len(set1)):
+	# 	set1[i]=[set1[i][0]*28,600-set1[i][1]*28]
+	random.shuffle(set1)
+	random.shuffle(set2)
+	doubleImage(set1, set2, num_frames=30, line_length=1000, dimensions=[800,800])
