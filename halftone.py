@@ -33,6 +33,8 @@ def wand_halftone_image(filename, x_res, y_res, shrink_scale):
     leftx = 0
     rightx = x_res
 
+    centerpoint_set = []
+
     while rightx < width:
         topy = 0
         bottomy = y_res
@@ -48,19 +50,21 @@ def wand_halftone_image(filename, x_res, y_res, shrink_scale):
             displacement = 1-displacement
             displacement = displacement * (x_res/2)
             if avg_color != 255:
-                draw_im.ellipse((leftx+displacement,topy+displacement,rightx-displacement,bottomy-displacement), fill=(avg_color,avg_color,avg_color,0))
-            else:
-                print ('found white')
+                # draw_im.ellipse((leftx+displacement,topy+displacement,rightx-displacement,bottomy-displacement), fill=(avg_color,avg_color,avg_color,0))
+                # draw_im.ellipse((leftx+displacement,topy+displacement,rightx-displacement,bottomy-displacement), fill=(0,0,0,0))
+                centerpoint_set.append([(leftx+rightx)/2,(topy+bottomy)/2])
             topy += y_res
             bottomy += y_res
         leftx += x_res
         rightx += x_res
 
     new_im.show()
+    # print (centerpoint_set)
 
 
 
 if __name__ == '__main__':
-    for i in range(5,15):
-        wand_halftone_image('flower.jpg', i, i, 1)
+    for i in range(14,15):
+        # wand_halftone_image('flower.jpg', i, i, 1)
+        wand_halftone_image('strawberry.jpg', i, i, 5)
         sleep(1)
